@@ -1,5 +1,5 @@
 angular.module('vehiclestatistics', [])
-    .controller('VehicleStatisticsCtrl', function ($scope, BatsServices, ionicToast, $rootScope, $state, $ionicModal, $timeout, PageConfig, UtilsFactory,
+    .controller('VehicleStatisticsCtrl', function ($scope, BatsServices, $rootScope, $state, $timeout, PageConfig, UtilsFactory,
         Constants) {
 
         var inputParam = {};

@@ -1,6 +1,6 @@
 angular.module('notification', [])
-  .controller('NotificationCtrl', function ($scope, $rootScope, $ionicPopup, $state, $ionicModal, $timeout, PageConfig, UtilsFactory, _,
-    BatsServices, ionicToast, Constants, $cordovaSQLite) {
+  .controller('NotificationCtrl', function ($scope, $rootScope, $state, $timeout, PageConfig, UtilsFactory, _,
+    BatsServices, Constants) {
 
     $scope.backToHistory = function () {
       // console.log(navigator)

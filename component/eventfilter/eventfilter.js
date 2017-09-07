@@ -1,5 +1,5 @@
 angular.module('eventhistoryfilter', [])
-    .controller('EventFilterCtrl', function ($scope, $ionicModal, $timeout, BatsServices, ionicToast, Constants, $state, PageConfig, _, UtilsFactory) {
+    .controller('EventFilterCtrl', function ($scope, $timeout, BatsServices, Constants, $state, PageConfig, _, UtilsFactory) {
 
         $scope.filter = [{'name' : 'Panic','type' : '0','value' : true},{'name' : 'Tamper Sim','type' : '1','value' : true},
             {'name' : 'Tamper Top','type' : '2','value' : true},{'name' : 'Battery','type' : '3','value' : true},

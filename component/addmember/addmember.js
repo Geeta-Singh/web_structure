@@ -1,6 +1,5 @@
 angular.module('addmember', [])
-.controller('AddmemberCtrl', function ($scope, BatsServices, PageConfig, $state, Constants, $ionicPopup,
-    ionicToast, UtilsFactory, $rootScope) {
+.controller('AddmemberCtrl', function ($scope, BatsServices, PageConfig, $state, Constants, UtilsFactory, $rootScope) {
     
     $scope.AddMemberForm = {};
     $scope.data = {};

@@ -1,5 +1,5 @@
 angular.module('navigation', [])
-.controller('NavigationCtrl', function($scope, $state, $ionicModal, $timeout, $ionicPopup, PageConfig,Constants, $window) {
+.controller('NavigationCtrl', function($scope, $state, $timeout, $ionicPopup, PageConfig,Constants, $window) {
     
   // $scope.showDuration = false;
   var defaultDistText = '0 hour 0 mins';

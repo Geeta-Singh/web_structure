@@ -1,5 +1,5 @@
 angular.module('replayroute', [])
-    .controller('ReplayRouteCtrl', function ($scope, $rootScope, $state, $ionicModal, $timeout, PageConfig, BatsServices, Constants, ionicToast,
+    .controller('ReplayRouteCtrl', function ($scope, $rootScope, $state, $timeout, PageConfig, BatsServices, Constants,
         UtilsFactory) {
 
 

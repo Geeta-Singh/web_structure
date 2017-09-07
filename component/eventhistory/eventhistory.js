@@ -1,5 +1,5 @@
 angular.module('eventhistory', [])
-    .controller('EventHistoryCtrl', function ($scope, $rootScope, $ionicModal, $timeout, BatsServices, ionicToast, PageConfig, Constants, $state,
+    .controller('EventHistoryCtrl', function ($scope, $rootScope, $timeout, BatsServices, PageConfig, Constants, $state,
         UtilsFactory) {
 
         // $scope.dummyVehicle = ["BDT_LT_17-001", "BDT_LT_17-002","BDT_LT_17-003", "BDT_LT_17-004"];

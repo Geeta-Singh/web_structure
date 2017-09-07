@@ -1,6 +1,6 @@
 angular.module('updatemarkerdetails', [])
-    .controller('UpdateMarkerDetailsCtrl', function ($scope, $state, $ionicModal, $timeout, PageConfig, Constants,
-        $ionicPopup, UtilsFactory, ionicToast, BatsServices) {
+    .controller('UpdateMarkerDetailsCtrl', function ($scope, $state, $timeout, PageConfig, Constants,
+        UtilsFactory, ionicToast, BatsServices) {
         $scope.updatemarkerdetialsForm = {};
         $scope.speedlimintcheck=0;
         
@@ -27,12 +27,12 @@ angular.module('updatemarkerdetails', [])
         if($scope.data.speed_limit>200){
             $scope.speedlimintcheck=1;
         }
-        $ionicModal.fromTemplateUrl('templates/popup/updateMarker.html', function (modal) {
-            $scope.updateMarkerModal = modal;
-        }, {
-                scope: $scope,
-                animation: 'slide-in-up'
-            });
+        // $ionicModal.fromTemplateUrl('templates/popup/updateMarker.html', function (modal) {
+        //     $scope.updateMarkerModal = modal;
+        // }, {
+        //         scope: $scope,
+        //         animation: 'slide-in-up'
+        //     });
 
         //    if (UtilsFactory.getNotificationDetails()) {
         //             $scope.notificationData = UtilsFactory.getNotificationDetails();

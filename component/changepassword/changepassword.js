@@ -1,5 +1,5 @@
 angular.module('changepassword', [])
-    .controller('ChangePasswordCtrl', function ($scope, BatsServices, ionicToast, PageConfig, Constants, $state, $ionicPopup) {
+    .controller('ChangePasswordCtrl', function ($scope, BatsServices, PageConfig, Constants, $state) {
     
     $scope.data = {};
 

@@ -1,6 +1,6 @@
 angular.module('eventhistorydetail', [])
-  .controller('EventHistoryDetailCtrl', function ($scope, $rootScope, $ionicPopup, $state, $ionicModal, $timeout, PageConfig, UtilsFactory, _,
-    BatsServices, ionicToast, Constants) {
+  .controller('EventHistoryDetailCtrl', function ($scope, $rootScope, $state, $timeout, PageConfig, UtilsFactory, _,
+    BatsServices, Constants) {
 
     if (UtilsFactory.getEventHistoryList().length == 0) {
       $state.go(PageConfig.EVENT_HISTORY)

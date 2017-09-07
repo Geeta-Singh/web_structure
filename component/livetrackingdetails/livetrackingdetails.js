@@ -1,5 +1,5 @@
 angular.module('livetrackingdetails', [])
-	.controller('LiveTrackingDetailsCtrl', function ($scope, $ionicModal, UtilsFactory, $timeout, BatsServices, $state, PageConfig, ChartFactory) {
+	.controller('LiveTrackingDetailsCtrl', function ($scope, UtilsFactory, $timeout, BatsServices, $state, PageConfig, ChartFactory) {
 
 		$scope.init = function () {
 			var inputParam = {};

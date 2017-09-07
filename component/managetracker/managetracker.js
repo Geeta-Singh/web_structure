@@ -1,5 +1,5 @@
 angular.module('managetracker', [])
-    .controller('ManageTrackerCtrl', function ($scope, $state, $ionicModal, $timeout, PageConfig, BatsServices, ionicToast, $interval,
+    .controller('ManageTrackerCtrl', function ($scope, $state, $timeout, PageConfig, BatsServices,  $interval,
         Constants, UtilsFactory) {
         var intervaltime = 15;
         function init() {

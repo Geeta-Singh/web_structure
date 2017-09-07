@@ -1,62 +1,62 @@
 var db = null;
-angular.module('bats', ['ionic', 'batsconstants', 'batsconfig', 'batsinterceptor', 'batsservices', 'batsdirective',
-  'batscontrollers', 'batsfilters', 'batsfactory', 'ngCordova'])
-  .run(function ($ionicPlatform, Constants, $rootScope, $cordovaNetwork, $state, ionicToast, PageConfig, Messages, $ionicPopup, $cordovaSQLite, $cordovaLocalNotification) {
+angular.module('bats', ['batsconstants', 'batsconfig', 'batsinterceptor', 'batsservices', 'batsdirective',
+  'batscontrollers', 'batsfilters', 'batsfactory'])
+  .run(function ( Constants, $rootScope, $state, PageConfig, Messages) {
 
-    $ionicPlatform.ready(function () {
-      if (window.cordova && window.cordova.plugins.Keyboard) {
-        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-        cordova.plugins.Keyboard.disableScroll(true);
+    // $ionicPlatform.ready(function () {
+    //   if (window.cordova && window.cordova.plugins.Keyboard) {
+    //     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    //     cordova.plugins.Keyboard.disableScroll(true);
 
-      }
+    //   }
 
-      if (window.StatusBar) {
-        StatusBar.styleDefault();
-      }
-      // window.addEventListener("online", function (e) {
-      //   alert("onlie");
-      //  // doSomething();
-      // }, false);
+    //   if (window.StatusBar) {
+    //     StatusBar.styleDefault();
+    //   }
+    //   // window.addEventListener("online", function (e) {
+    //   //   alert("onlie");
+    //   //  // doSomething();
+    //   // }, false);
 
-      // window.addEventListener("offline", function (e) {
-      //  // doSomething();
-      //  alert(" ofline");
-      // }, false);
-      // Check for network connection
-      // if (window.Connection) {
+    //   // window.addEventListener("offline", function (e) {
+    //   //  // doSomething();
+    //   //  alert(" ofline");
+    //   // }, false);
+    //   // Check for network connection
+    //   // if (window.Connection) {
 
-      //   if (navigator.connection.type == Connection.NONE) {
-      //     $ionicPopup.confirm({
-      //       title: 'No Internet Connection',
-      //       content: 'Sorry, no Internet connectivity detected. Please reconnect and try again.'
-      //     })
-      //       .then(function (result) {
-      //         if (!result) {
-      //           ionic.Platform.exitApp();
-      //         }
-      //       });
-      //   }
-      // }
-      db = $cordovaSQLite.openDB({ name: "BATS.db", iosDatabaseLocation: 'default' });
-      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS Token (token varchar)");
-      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS Notification (data text)");
+    //   //   if (navigator.connection.type == Connection.NONE) {
+    //   //     $ionicPopup.confirm({
+    //   //       title: 'No Internet Connection',
+    //   //       content: 'Sorry, no Internet connectivity detected. Please reconnect and try again.'
+    //   //     })
+    //   //       .then(function (result) {
+    //   //         if (!result) {
+    //   //           ionic.Platform.exitApp();
+    //   //         }
+    //   //       });
+    //   //   }
+    //   // }
+    //   db = $cordovaSQLite.openDB({ name: "BATS.db", iosDatabaseLocation: 'default' });
+    //   $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS Token (token varchar)");
+    //   $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS Notification (data text)");
 
-      // $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
-      //   var onlineState = networkState;
-      //   pingNetConnection();
-      // })
-      // // listen for Offline event
-      // $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
-      //   var offlineState = networkState;
-      //   $ionicPopup.confirm({
-      //       title: 'No Internet Connection',
-      //       content: 'Sorry, no Internet connectivity detected. Please reconnect and try again.'
-      //     })
-      //     .then(function(result) {
-      //         ionic.Platform.exitApp();
-      //     });
-      // })
-    });
+    //   // $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
+    //   //   var onlineState = networkState;
+    //   //   pingNetConnection();
+    //   // })
+    //   // // listen for Offline event
+    //   // $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
+    //   //   var offlineState = networkState;
+    //   //   $ionicPopup.confirm({
+    //   //       title: 'No Internet Connection',
+    //   //       content: 'Sorry, no Internet connectivity detected. Please reconnect and try again.'
+    //   //     })
+    //   //     .then(function(result) {
+    //   //         ionic.Platform.exitApp();
+    //   //     });
+    //   // })
+    // });
 
     $rootScope.$on("400", function (event, message) {
       $rootScope.interlogout();
@@ -133,37 +133,37 @@ angular.module('bats', ['ionic', 'batsconstants', 'batsconfig', 'batsinterceptor
     //   }
     // }
 
-    $ionicPlatform.registerBackButtonAction(function (event) {
-      if ($state.current.name == PageConfig.START) {
-        var confirmPopup = $ionicPopup.confirm({
-          title: "Exit",
-          template: "Are you sure want to exit ?",
-          cancelText: "No",
-          scope: $rootScope,
-          okText: "Yes",
-        });
-        confirmPopup.then(function (res) {
-          if (res) {
-            navigator.app.exitApp();
-          }
-        });
-      }
-      else if ($state.current.name == PageConfig.SIGNUP_STEP1 ||
-        $state.current.name == PageConfig.LOGIN) {
-        $state.go(PageConfig.START);
-      }
-      else if ($state.current.name == PageConfig.LIVE_TRACKING) {
-        navigator.app.exitApp();// $state.go(PageConfig.START);
-      }
-      // else ($state.current.name==PageConfig.MANAGE_TRACKER || $state.current.name==PageConfig.REPLAY_ROUTE
-      //   || $state.current.name==PageConfig.VEHICLE_STATISTICS || $state.current.name==PageConfig.NAVIGATION
-      //   || $state.current.name==PageConfig.REPORT || $state.current.name==PageConfig.MANAGE_MEMBER){
-      else {
-        $state.go(PageConfig.LIVE_TRACKING);
-      }
-      // else{
-      // 	navigator.app.backHistory();
-      // }
-    }, 100);
+    // $ionicPlatform.registerBackButtonAction(function (event) {
+    //   if ($state.current.name == PageConfig.START) {
+    //     var confirmPopup = $ionicPopup.confirm({
+    //       title: "Exit",
+    //       template: "Are you sure want to exit ?",
+    //       cancelText: "No",
+    //       scope: $rootScope,
+    //       okText: "Yes",
+    //     });
+    //     confirmPopup.then(function (res) {
+    //       if (res) {
+    //         navigator.app.exitApp();
+    //       }
+    //     });
+    //   }
+    //   else if ($state.current.name == PageConfig.SIGNUP_STEP1 ||
+    //     $state.current.name == PageConfig.LOGIN) {
+    //     $state.go(PageConfig.START);
+    //   }
+    //   else if ($state.current.name == PageConfig.LIVE_TRACKING) {
+    //     navigator.app.exitApp();// $state.go(PageConfig.START);
+    //   }
+    //   // else ($state.current.name==PageConfig.MANAGE_TRACKER || $state.current.name==PageConfig.REPLAY_ROUTE
+    //   //   || $state.current.name==PageConfig.VEHICLE_STATISTICS || $state.current.name==PageConfig.NAVIGATION
+    //   //   || $state.current.name==PageConfig.REPORT || $state.current.name==PageConfig.MANAGE_MEMBER){
+    //   else {
+    //     $state.go(PageConfig.LIVE_TRACKING);
+    //   }
+    //   // else{
+    //   // 	navigator.app.backHistory();
+    //   // }
+    // }, 100);
   })
 

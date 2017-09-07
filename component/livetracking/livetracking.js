@@ -1,5 +1,5 @@
-angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($scope, $rootScope, $timeout, UtilsFactory, $state, PageConfig, BatsServices, ionicToast,
-	$interval, Constants, $cordovaSms, $ionicPopup, ) {
+angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($scope, $rootScope, $timeout, UtilsFactory, $state, PageConfig, BatsServices,
+	$interval, Constants, $cordovaSms ) {
 	var loc = localStorage.getItem(Constants.PARKING_MODE);
 	console.log("local storage "+loc);
 	if (loc == 'true') {

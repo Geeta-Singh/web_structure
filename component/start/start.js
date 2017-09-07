@@ -1,5 +1,5 @@
 angular.module('start', [])
-.controller('StartCtrl', function($scope, $state, $ionicModal, $timeout, PageConfig, Constants) {
+.controller('StartCtrl', function($scope, $state, $timeout, PageConfig, Constants) {
   
 
     if(localStorage.getItem(Constants.accessToken)){

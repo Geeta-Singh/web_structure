@@ -1,5 +1,5 @@
 angular.module('report', [])
-    .controller('ReportCtrl', function ($scope, $rootScope, BatsServices, ionicToast, PageConfig, Constants, $state,
+    .controller('ReportCtrl', function ($scope, $rootScope, BatsServices, PageConfig, Constants, $state,
         UtilsFactory) {
 
         var reportParam = {};

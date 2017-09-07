@@ -1,14 +1,14 @@
 angular.module('forgotpassword', [])
-.controller('ForgotPasswordCtrl', function ($scope, $ionicModal, $timeout, BatsServices, ionicToast, PageConfig,Constants,$state) {
+.controller('ForgotPasswordCtrl', function ($scope, $timeout, BatsServices, PageConfig,Constants,$state) {
     $scope.data = {};
 
 
-      $ionicModal.fromTemplateUrl('templates/popup/forgotPass.html', function(modal) {
-            $scope.forgotpassword = modal;
-            }, {
-            scope: $scope,
-            animation: 'slide-in-up'
-        });
+    //   $ionicModal.fromTemplateUrl('templates/popup/forgotPass.html', function(modal) {
+    //         $scope.forgotpassword = modal;
+    //         }, {
+    //         scope: $scope,
+    //         animation: 'slide-in-up'
+    //     });
         
     $scope.gotoResetPassword = function (data, form) {
         // console.log($scope.email);

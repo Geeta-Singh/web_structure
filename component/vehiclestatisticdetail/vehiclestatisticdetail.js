@@ -1,5 +1,5 @@
 angular.module('vehiclestatisticsdetail', [])
-.controller('VehicleStatisticsDetailCtrl', function($scope,$rootScope, $state, $ionicModal, $timeout, PageConfig, 
+.controller('VehicleStatisticsDetailCtrl', function($scope,$rootScope, $state, $timeout, PageConfig, 
     UtilsFactory, Constants, ChartFactory) {
     //  if (UtilsFactory.getNotificationDetails()) {
     //         console.log(UtilsFactory.getNotificationDetails());

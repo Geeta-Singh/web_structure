@@ -1,4 +1,4 @@
-angular.module('batsconfig', [])
+angular.module('batsconfig', ['ui.router'])
   .config(function ($stateProvider, $urlRouterProvider, PageConfig, $httpProvider, Constants) {
 
     $httpProvider.interceptors.push("BatsInterceptor");

@@ -1,6 +1,6 @@
 angular.module('notificationbell', [])
-    .controller('notificationbellCtrl', function ($scope, $ionicModal, $timeout, UtilsFactory, $state, PageConfig, BatsServices,
-        ionicToast, $interval, Constants, $cordovaSQLite, $rootScope, $ionicPlatform) {
+    .controller('notificationbellCtrl', function ($scope, $timeout, UtilsFactory, $state, PageConfig, BatsServices,
+         $interval, Constants, $rootScope) {
         // console.log("inside notification bell");
         //$scope.count;
         //  $scope.fristTime = 0;

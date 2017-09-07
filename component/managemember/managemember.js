@@ -1,6 +1,6 @@
 angular.module('managemember', [])
-    .controller('ManageMemberCtrl', function ($scope, $ionicModal, UtilsFactory, $timeout, BatsServices, ionicToast, $ionicPopup,
-        Constants, $state, PageConfig, $rootScope, $ionicPopover) {
+    .controller('ManageMemberCtrl', function ($scope, UtilsFactory, $timeout, BatsServices,
+        Constants, $state, PageConfig, $rootScope) {
 
         $scope.data = {};
 

@@ -1,6 +1,6 @@
 angular.module('geofence', [])
-  .controller('GeoFenceCtrl', function ($scope, UtilsFactory, $state, PageConfig, $ionicPopup, $ionicModal, BatsServices,
-        ionicToast, Constants) {
+  .controller('GeoFenceCtrl', function ($scope, UtilsFactory, $state, PageConfig, BatsServices,
+         Constants) {
 
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -40,12 +40,12 @@ angular.module('geofence', [])
     }
     // ************************** END notification part******************** 
 
-    $ionicModal.fromTemplateUrl('templates/popup/updateMarker.html', function(modal) {
-        $scope.updateMarkerModal = modal;
-    },{
-        scope: $scope,
-        animation: 'slide-in-up'
-    });
+    // $ionicModal.fromTemplateUrl('templates/popup/updateMarker.html', function(modal) {
+    //     $scope.updateMarkerModal = modal;
+    // },{
+    //     scope: $scope,
+    //     animation: 'slide-in-up'
+    // });
 
     /**initialization function for map loading **/
     $scope.init = function(){

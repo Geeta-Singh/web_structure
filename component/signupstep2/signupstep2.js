@@ -1,6 +1,6 @@
 angular.module('signupstep2', [])
-    .controller('SignupStep2Ctrl', function ($scope, $state, $ionicModal, $timeout, $ionicPopup, PageConfig, Constants,
-        UtilsFactory, BatsServices, ionicToast) {
+    .controller('SignupStep2Ctrl', function ($scope, $state, $timeout, PageConfig, Constants,
+        UtilsFactory, BatsServices) {
 
         $scope.simCarriers = Constants.OPERATOR;
         $scope.data = [];

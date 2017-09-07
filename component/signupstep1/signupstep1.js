@@ -1,6 +1,6 @@
 angular.module('signupstep1', [])
-.controller('SignupStep1Ctrl', function ($scope, $state, $ionicModal, $timeout, PageConfig, Constants, BatsServices,
-		UtilsFactory, $ionicPopup, ionicToast) {
+.controller('SignupStep1Ctrl', function ($scope, $state, $timeout, PageConfig, Constants, BatsServices,
+		UtilsFactory) {
 		
 		$scope.countries = Constants.COUNTRIES;
 		$scope.states = Constants.STATES;

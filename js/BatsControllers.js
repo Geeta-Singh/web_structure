@@ -7,12 +7,12 @@ angular.module('batscontrollers', [
   'livetrackingdetails', 'report', 'addmember',
   'managemember', 'livetrackingdevices', 'eventhistoryfilter',
   'replayroutedetail', 'notification',
-  'ion-datetime-picker', 'ion-place-tools', 'ionic-toast', 'geofence',
-  'underscore', 'ngLoadingSpinner', 'gm', 'angular-svg-round-progressbar', 'ngCordova', 'notificationbell'
+    'geofence',
+  'underscore', 'gm', 'angular-svg-round-progressbar', 'notificationbell'
 ])
 
-  .controller('BatsCtrl', function ($scope, $ionicModal, $timeout, $rootScope, $state, PageConfig, Constants, $cordovaNetwork,
-    $ionicPopup,  $interval, BatsServices, ionicToast, UtilsFactory, $cordovaLocalNotification, $ionicPlatform, $cordovaSQLite) {
+  .controller('BatsCtrl', function ($scope,  $timeout, $rootScope, $state, PageConfig, Constants,
+    $interval, BatsServices, UtilsFactory) {
 
     $scope.openSetting = false;
     $scope.openSettingBar = function () {

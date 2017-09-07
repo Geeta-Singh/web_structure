@@ -1,6 +1,6 @@
 angular.module('login', [])
-    .controller('LoginCtrl', function ($scope, $state, $ionicModal, BatsServices, ionicToast, Constants, $ionicPopup, $cordovaSQLite,
-        $timeout, PageConfig, $rootScope, $cordovaNetwork) {
+    .controller('LoginCtrl', function ($scope, $state, BatsServices, Constants,
+        $timeout, PageConfig, $rootScope) {
 
         if (localStorage.getItem(Constants.accessToken)) {
             localStorage.removeItem(Constants.accessToken)
@@ -17,9 +17,9 @@ angular.module('login', [])
 
         $scope.gotoHome = function (data, form) {
 
-            var connectionType = $cordovaNetwork.getNetwork();
-            if (connectionType != 'none') {
-                console.log("connection type: " + connectionType);
+            // var connectionType = $cordovaNetwork.getNetwork();
+            // if (connectionType != 'none') {
+                // console.log("connection type: " + connectionType);
                 $scope.Validate = true;
                 var userId = new String(data.userid);
                 var inputParam = { 'user_id': userId, 'password': data.password }
@@ -42,33 +42,33 @@ angular.module('login', [])
                         $rootScope.email = JSON.parse(localStorage.getItem(Constants.USER_VO)).email;
                     }
                     token_login = window.localStorage.getItem("token");
-                    var query_insert = "INSERT INTO Token (token) VALUES (?)";
-                    $cordovaSQLite.execute(db, query_insert, [token_login]).then(function (res) {
-                        console.log("inserting token into db from login.js");
+                    // var query_insert = "INSERT INTO Token (token) VALUES (?)";
+                    // $cordovaSQLite.execute(db, query_insert, [token_login]).then(function (res) {
+                    //     console.log("inserting token into db from login.js");
                         $state.go(PageConfig.MANAGE_TRACKER);
-                    }, function (err) {
-                        // alert("Insert Token in DB err -> " +
-                        // JSON.stringify(err));
-                    });
+                    // }, function (err) {
+                    //     // alert("Insert Token in DB err -> " +
+                    //     // JSON.stringify(err));
+                    // });
                     // console.log("response: "+response);
                     // $state.go(PageConfig.MANAGE_TRACKER);
                 }).error(function (error) {
                     // console.log("resposne in error: "+error);
                     if(error=='Unauthorized'){
-                        ionicToast.show(error , Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+                        // ionicToast.show(error , Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
                     }else if(error.err == 'Origin Server returned 504 Status') {
-                        ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+                        // ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
                     }
                     else {
-                        ionicToast.show(error.err , Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+                        // ionicToast.show(error.err , Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
                     }// ionicToast.show(error, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
                 })
-            } else {
-                var alertPopup = $ionicPopup.alert({
-                    title: 'No Internet Connection',
-                    template: '<div class="pwdSuccessPopup">Sorry, no Internet connectivity detected. Please reconnect and try again.</div>'
-                });
-            }
+            // } else {
+                // var alertPopup = $ionicPopup.alert({
+                //     title: 'No Internet Connection',
+                //     template: '<div class="pwdSuccessPopup">Sorry, no Internet connectivity detected. Please reconnect and try again.</div>'
+                // });
+            // }
         }
 
         $scope.gotoFogotPassword = function () {
