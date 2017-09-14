@@ -1,7 +1,7 @@
 angular.module('login', [])
-    .controller('LoginCtrl', function ($scope, $state, BatsServices, Constants,
+    .controller('LoginCtrl', function ($scope, BatsServices, Constants,
         $timeout, PageConfig, $rootScope) {
-
+            $rootScope.loggedIn = false;
         if (localStorage.getItem(Constants.accessToken)) {
             localStorage.removeItem(Constants.accessToken)
         }
@@ -16,6 +16,8 @@ angular.module('login', [])
         $scope.Validate = false;
 
         $scope.gotoHome = function (data, form) {
+
+            console.log("inside login: "+data);
 
             // var connectionType = $cordovaNetwork.getNetwork();
             // if (connectionType != 'none') {
@@ -45,7 +47,13 @@ angular.module('login', [])
                     // var query_insert = "INSERT INTO Token (token) VALUES (?)";
                     // $cordovaSQLite.execute(db, query_insert, [token_login]).then(function (res) {
                     //     console.log("inserting token into db from login.js");
-                        $state.go(PageConfig.MANAGE_TRACKER);
+                        // $state.go(PageConfig.MANAGE_TRACKER);
+                        console.log("value of loggedin: "+$rootScope.loggedIn);
+                        $rootScope.loggedIn = true;
+                        console.log("value of loggedin: "+$rootScope.loggedIn);
+                        // $state.go(PageConfig.LIVE_TRACKING);
+                        // $scope.$apply();
+                        
                     // }, function (err) {
                     //     // alert("Insert Token in DB err -> " +
                     //     // JSON.stringify(err));
@@ -72,7 +80,7 @@ angular.module('login', [])
         }
 
         $scope.gotoFogotPassword = function () {
-            $state.go(PageConfig.FORGOT_PASSWORD);
+            // $state.go(PageConfig.FORGOT_PASSWORD);
         }
 
 

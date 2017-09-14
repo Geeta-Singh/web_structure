@@ -12,8 +12,8 @@
   <link href="css/style.css" rel="stylesheet">
 
   <script src="lib/angular/angular.js"></script>
-  <script src="lib/ionic/js/angular-ui/angular-ui-router.min.js"></script> 
-
+  <!-- <script src="lib/ionic/js/angular-ui/angular-ui-router.min.js"></script>  -->
+  <script src="lib/angular/angular-route.min.js"></script>
   <!-- <script src="lib/ionic/js/ionic.bundle.js"></script> -->
 
   <!--cordova script (this will be a 404 during development) -->
@@ -61,7 +61,7 @@
   <!-- <script src="assets/ion-datetime-picker/ion-datetime-picker.min.js"></script> -->
   <!-- <script src="assets/ngCordova/ng-cordova.js"></script>
   <script src="assets/ngCordova/ng-cordova.min.js"></script> -->
-  <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyC2n_nKwxL85mrmKd5FLvZfAy8hFs1dJNE&sensor=false&libraries=places,geometry,drawing"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyC2n_nKwxL85mrmKd5FLvZfAy8hFs1dJNE&libraries=places,geometry,drawing"></script>
   <!--<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&sensor=true&libraries=places,geometry"></script>-->
   <script src="lib/ionic/js/angular/angularjs-google-maps.js"></script>
   <!-- <script src="assets/ion-place-autocomplete/ion-place-autocomplete.js"></script>
@@ -117,13 +117,171 @@
   <script src="component/notification/notification.js"></script>
    <script src="component/geofence/geofence.js"></script>
   <script src="component/notificationbell/notificationbell.js"></script>
-
+    <style>
+        .row {
+            margin-right: 0px !important;
+            margin-left: 0px !important; 
+        }
+        .text-box{
+            border: 1px solid #e7e7e7 !important;
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+        .top-font{
+            font-size:12px;
+            font-weight:bold;
+        }
+        .bottom-font{
+            font-size:12px;
+            color:grey;
+        }
+        .div-padding{
+            padding-top:10px;
+            padding-left:10px;
+            padding-right:10px;
+        }
+    </style>
 
 </head>
 
 <body ng-controller="BatsCtrl">
     <!-- <div class="" us-spinner="{radius:0, width:0, length: 0}"></div> -->
-    <div ui-view ></div>
+    <!-- <div class="row">
+        <div class="col-md-2">
+            <div>Menu</div>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                Header part
+            </div>
+            <div ui-view ></div>
+        </div>
+    </div> -->
+    <!-- <div ui-view ></div> -->
+    <div ng-if="!loggedIn">
+        <div ng-controller="LoginCtrl">
+            <div class="row top-font" style="height: 60px;padding-top:20px;padding-bottom:20px;border-bottom:1px solid lightgrey;">
+                <div class="col-md-5" style="text-align:center;">
+                    <img src="img/logo-login.png" width="100px;">
+                </div>
+                <form name="loginForm" novalidate ng-submit="gotoHome(data, loginForm)">
+                    <div class="col-md-2">
+                        <input type="text" ng-model="data.userid" class="text-box" placeholder="UserID" style="float:left;">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" ng-model="data.password" class="text-box" placeholder="Password" style="float:left;">
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn" style="background-color:#00ba88;color:white;height:22px;width:100px;padding:0px;">Login</button>
+                    </div>
+                    <div class="col-md-2">
+                        <span>Forgot Password?</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- <div ng-if="loggedIn">
+            <div class="row top-font" style="height: 60px;padding-top:20px;padding-bottom:20px;border-bottom:1px solid lightgrey;">
+                <div class="col-md-5" style="text-align:center;">
+                    <img src="img/logo-login.png" width="100px;">
+                </div>
+            </div>
+        </div>     -->
+        <div class="row" style="text-align:center;">
+            <div class="col-md-offset-4 col-md-4" >
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-8 col-md-offset-2" style="box-shadow: 1px 1px 15px grey;margin-top:50px;border: 1px solid lightgrey;">
+                        <div style="padding:20px 50px 0px 50px;">
+                            <span style="font-weight:bold;font-size:14px;">TRACK YOUR WHEELS ON YOUR PALM</span>
+                        </div>
+                        <div>
+                            <span style="color:grey;font-size:10px;">Register your account</span>
+                        </div>
+                        <form class="bottom-font">
+                            <div class="div-padding">
+                                <span class="pull-left">First Name</span>
+                                <input class="text-box" type="text">
+                            </div>
+                            <div class="div-padding">
+                                <span class="pull-left">Last Name</span>
+                                <input class="text-box" type="text">
+                            </div>
+                            <div class="div-padding">
+                                <span class="pull-left">Email</span>
+                                <input class="text-box" type="text">
+                            </div>
+                            <div class="div-padding">
+                                <span class="pull-left">Phone Number</span>
+                                <input class="text-box" type="text">
+                            </div>
+                            <div class="div-padding">
+                                <span class="pull-left">Password</span>
+                                <input class="text-box" type="text">
+                            </div>
+                            <div class="div-padding">
+                                <span class="pull-left">Country</span>
+                                <input class="text-box" type="text">
+                            </div>
+                            <div class="div-padding">
+                                <span class="pull-left">State</span>
+                                <input class="text-box" type="text">
+                            </div>
+                            <div class="div-padding" style="padding-bottom:20px;padding-top:20px;">
+                                <button class="btn btn-original" style="width:100%;height:25px;color:white;background-color:#00ba88;padding:0px;">Next</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- below code is for after login -->
+    <div ng-if="loggedIn">
+        <div class="row">
+            <div class="col-md-2" style="border-right:1px solid lightgrey;height:100%;padding-left:40px;">
+                <div>
+                    <div style="padding-top: 10px;padding-bottom: 50px;margin-left:-10px;">
+                        <img src="img/logo-login.png" style="width:130px;">
+                    </div>
+                    <div style="padding-bottom: 10px;">
+                        <a href="/b2c_web">
+                            <img src="img/menu/live_tracking.png" width="20px">
+                            <label style="color: grey;padding-left: 20px;font-size: 12px;">Live Tracking</label>
+                        </a>
+                    </div>
+                    <div style="padding-bottom: 10px;">
+                        <a href="/b2c_web/replay">
+                            <img src="img/menu/replay.png" width="20px">
+                            <label style="color: grey;padding-left: 20px;font-size: 12px;">Replay Route</label>
+                        </a>
+                    </div>
+                    <div style="padding-bottom: 10px;">
+                        <a href="/b2c_web/events">
+                            <img src="img/menu/event_history.png" width="20px">
+                            <label style="color: grey;padding-left: 20px;font-size: 12px;">Events History</label>
+                        </a>
+                    </div>
+                    <div style="padding-bottom: 10px;">
+                        <a href="/b2c_web/statistics">
+                            <img src="img/menu/vehicle_statitics.png" width="20px">
+                            <label style="color: grey;padding-left: 20px;font-size: 12px;">Vehicle Statistics</label>
+                        </a>
+                    </div>
+                    <div style="padding-bottom: 10px;">
+                        <a href="/b2c_web/reports">
+                            <img src="img/menu/reports.png" width="20px">
+                            <label style="color: grey;padding-left: 20px;font-size: 12px;">Reports</label>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10" style="padding:0px;">
+                <div ng-view></div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

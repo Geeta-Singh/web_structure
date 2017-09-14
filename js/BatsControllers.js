@@ -11,9 +11,10 @@ angular.module('batscontrollers', [
   'underscore', 'gm', 'angular-svg-round-progressbar', 'notificationbell'
 ])
 
-  .controller('BatsCtrl', function ($scope,  $timeout, $rootScope, $state, PageConfig, Constants,
+  .controller('BatsCtrl', function ($scope,  $timeout, $rootScope, PageConfig, Constants,
     $interval, BatsServices, UtilsFactory) {
-
+      // $rootScope.loggedIn = false;
+      console.log("inside batscontroller");
     $scope.openSetting = false;
     $scope.openSettingBar = function () {
       $scope.openSetting = !$scope.openSetting;

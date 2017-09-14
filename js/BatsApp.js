@@ -1,7 +1,7 @@
 var db = null;
 angular.module('bats', ['batsconstants', 'batsconfig', 'batsinterceptor', 'batsservices', 'batsdirective',
   'batscontrollers', 'batsfilters', 'batsfactory'])
-  .run(function ( Constants, $rootScope, $state, PageConfig, Messages) {
+  .run(function ( Constants, $rootScope, PageConfig, Messages) {
 
     // $ionicPlatform.ready(function () {
     //   if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -60,7 +60,7 @@ angular.module('bats', ['batsconstants', 'batsconfig', 'batsinterceptor', 'batss
 
     $rootScope.$on("400", function (event, message) {
       $rootScope.interlogout();
-      ionicToast.show(message, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+      // ionicToast.show(message, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
     });
 
     if (localStorage.getItem(Constants.ACCESS_TYPE) != null) {
@@ -83,8 +83,9 @@ angular.module('bats', ['batsconstants', 'batsconfig', 'batsinterceptor', 'batss
           next.name == PageConfig.EVENT_FILTER || next.name == PageConfig.LIVE_TRACKING_DEVICES ||
           next.name == PageConfig.REPLAY_ROUTE_DETAILS) {
           event.preventDefault();
+          $rootScope.loggedIn = false;
           //  alert("bats", next.name)
-          ionicToast.show(Messages.NOT_AUTHORIZED_MESSAGE, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+          // ionicToast.show(Messages.NOT_AUTHORIZED_MESSAGE, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
           $state.go(PageConfig.LOGIN);
         }
       }
@@ -97,6 +98,7 @@ angular.module('bats', ['batsconstants', 'batsconfig', 'batsinterceptor', 'batss
             next.name == PageConfig.REPORT || next.name == PageConfig.MANAGE_MEMBER ||
             next.name == PageConfig.ADD_MEMBER || next.name == PageConfig.REPLAY_ROUTE_DETAILS) {
             event.preventDefault();
+            $rootScope.loggedIn = true;
             // ionicToast.show(Messages.MEMBER_NOT_AUTHORIZED_MESSAGE, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
             $state.go(PageConfig.LIVE_TRACKING);
           }

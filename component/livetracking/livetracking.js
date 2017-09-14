@@ -1,5 +1,5 @@
-angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($scope, $rootScope, $timeout, UtilsFactory, $state, PageConfig, BatsServices,
-	$interval, Constants, $cordovaSms ) {
+angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($scope, $rootScope, $timeout, UtilsFactory, PageConfig, BatsServices,
+	$interval, Constants ) {
 	var loc = localStorage.getItem(Constants.PARKING_MODE);
 	console.log("local storage "+loc);
 	if (loc == 'true') {
@@ -19,152 +19,152 @@ angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($sco
 	//var active_parking = '​{KEY:0123456789,ACTIVATE PARKING MODE}';
 	//"\"{\"http://example.com\""
 	//var s = "\"{\"KEY\":\"0123456789\",\"ACTIVATE PARKING MODE\"}\"";
-	$scope.sendSMS_Active = function () {
-		var confirmPopup = $ionicPopup.confirm({
-			title: 'Activate Parking Mode',
-			template: 'Please make sure that you are sending SMS with your registered mobile number',
-			cancelText: 'No',
-			scope: $scope,
-			okText: 'Yes',
-		});
-		confirmPopup.then(function (res) {
-			if (res) {
+	// $scope.sendSMS_Active = function () {
+	// 	var confirmPopup = $ionicPopup.confirm({
+	// 		title: 'Activate Parking Mode',
+	// 		template: 'Please make sure that you are sending SMS with your registered mobile number',
+	// 		cancelText: 'No',
+	// 		scope: $scope,
+	// 		okText: 'Yes',
+	// 	});
+	// 	confirmPopup.then(function (res) {
+	// 		if (res) {
 				
-				if (SMS) SMS.sendSMS('9513334624', "\"{\"KEY\":\"0123456789\",\"ACTIVATE PARKING MODE\"}\"",
-					function () {
-						console.log('Success! SMS was sent');
-						ionicToast.show('Activation request sent to Device \n ', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
-						$scope.send_act_SMS = true;
-						$scope.send_dact_SMS = false;
-						deleteSMS();
-						readsms();
-					},
-					function (str) {
-						ionicToast.show(str, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
-						console.log(str);
-					});
-			}
-		});
-	}
-	$scope.sendSMS_Deactive = function () {
-		var confirmPopup = $ionicPopup.confirm({
-			title: 'De_Activate Parking Mode',
-			template: 'Please make sure that you are sending SMS with your registered mobile number',
-			cancelText: 'No',
-			scope: $scope,
-			okText: 'Yes',
-		});
-		confirmPopup.then(function (res) {
-			if (res) {
-				if (SMS) SMS.sendSMS('9513334624', "\"{\"KEY\":\"0123456789\",\"DEACTIVATE PARKING MODE\"}\"",
-					function () {
-						ionicToast.show('Deactivation request sent to Device \n ', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
-						console.log('Success! SMS was sent');
-						$scope.send_dact_SMS = true;
-						$scope.send_act_SMS = false;
-						deleteSMS();
-						readsms();
-					},
-					function (str) {
-						ionicToast.show(str, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
-						console.log(str);
-					});
-			}
-		});
-	}
+	// 			if (SMS) SMS.sendSMS('9513334624', "\"{\"KEY\":\"0123456789\",\"ACTIVATE PARKING MODE\"}\"",
+	// 				function () {
+	// 					console.log('Success! SMS was sent');
+	// 					ionicToast.show('Activation request sent to Device \n ', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+	// 					$scope.send_act_SMS = true;
+	// 					$scope.send_dact_SMS = false;
+	// 					deleteSMS();
+	// 					readsms();
+	// 				},
+	// 				function (str) {
+	// 					ionicToast.show(str, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+	// 					console.log(str);
+	// 				});
+	// 		}
+	// 	});
+	// }
+	// $scope.sendSMS_Deactive = function () {
+	// 	var confirmPopup = $ionicPopup.confirm({
+	// 		title: 'De_Activate Parking Mode',
+	// 		template: 'Please make sure that you are sending SMS with your registered mobile number',
+	// 		cancelText: 'No',
+	// 		scope: $scope,
+	// 		okText: 'Yes',
+	// 	});
+	// 	confirmPopup.then(function (res) {
+	// 		if (res) {
+	// 			if (SMS) SMS.sendSMS('9513334624', "\"{\"KEY\":\"0123456789\",\"DEACTIVATE PARKING MODE\"}\"",
+	// 				function () {
+	// 					ionicToast.show('Deactivation request sent to Device \n ', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+	// 					console.log('Success! SMS was sent');
+	// 					$scope.send_dact_SMS = true;
+	// 					$scope.send_act_SMS = false;
+	// 					deleteSMS();
+	// 					readsms();
+	// 				},
+	// 				function (str) {
+	// 					ionicToast.show(str, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+	// 					console.log(str);
+	// 				});
+	// 		}
+	// 	});
+	// }
 
-	function readsms() {
-		if (SMS) SMS.startWatch(function () {
-			console.log('watching started');
-		}, function () {
-			console.log('failed to start watching');
-		});
-		document.addEventListener('onSMSArrive', function (e) {
-			var sms = e.data;
-			console.log(sms);
-			//alert(sms);
-			console.log(sms.body);
-			var a = sms.body.split("\n") // Delimiter is a string
-			console.log(" a " + a);
-			for (var i = 0; i < a.length; i++) {
-				console.log(a[i]);
-				a = a[i];
-				break;
-			}
-			console.log("im final a" + a);
-			if (a == '# PARKING MODE ACTIVATED #') {
-				$scope.parking_inavtive = false;
-				$scope.parking_activate = true;
-				$scope.send_dact_SMS = false;
-				localStorage.setItem(Constants.PARKING_MODE, false);
-				stopsms();
-			} else if (a == '# PARKING MODE DEACTIVATED #') {
-				$scope.parking_inavtive = true;
-				$scope.parking_activate = false;
-				localStorage.setItem(Constants.PARKING_MODE, true);
-				$scope.send_act_SMS = false;
-				stopsms();
-			}
-			else {
+	// function readsms() {
+	// 	if (SMS) SMS.startWatch(function () {
+	// 		console.log('watching started');
+	// 	}, function () {
+	// 		console.log('failed to start watching');
+	// 	});
+	// 	document.addEventListener('onSMSArrive', function (e) {
+	// 		var sms = e.data;
+	// 		console.log(sms);
+	// 		//alert(sms);
+	// 		console.log(sms.body);
+	// 		var a = sms.body.split("\n") // Delimiter is a string
+	// 		console.log(" a " + a);
+	// 		for (var i = 0; i < a.length; i++) {
+	// 			console.log(a[i]);
+	// 			a = a[i];
+	// 			break;
+	// 		}
+	// 		console.log("im final a" + a);
+	// 		if (a == '# PARKING MODE ACTIVATED #') {
+	// 			$scope.parking_inavtive = false;
+	// 			$scope.parking_activate = true;
+	// 			$scope.send_dact_SMS = false;
+	// 			localStorage.setItem(Constants.PARKING_MODE, false);
+	// 			stopsms();
+	// 		} else if (a == '# PARKING MODE DEACTIVATED #') {
+	// 			$scope.parking_inavtive = true;
+	// 			$scope.parking_activate = false;
+	// 			localStorage.setItem(Constants.PARKING_MODE, true);
+	// 			$scope.send_act_SMS = false;
+	// 			stopsms();
+	// 		}
+	// 		else {
 
-			}
-		});
-	}
-	function deleteSMS() {
-		listSMS();
-		var filter = {
-			box: '', // 'inbox' (default), 'sent', 'draft', 'outbox', 'failed', 'queued', and '' for all
-			// the following 4 filters are OR relationship
-			_id: 1234, // given a sms id, recommend ONLY use this filter
-			//read:0, // delete all UNread SMS
-			//indexFrom: 0, // start from index 0
-			address: "+919513334624" // delete all SMS from this phone number
-			//body: '# PARKING MODE ' // delete SMS by content
-		};
-		if (SMS) SMS.deleteSMS(filter, function (n) {
-			console.log(n + ' sms messages deleted');
-		}, function (err) {
-			console.log('error delete sms: ' + err);
-		});
-	}
+	// 		}
+	// 	});
+	// }
+	// function deleteSMS() {
+	// 	listSMS();
+	// 	var filter = {
+	// 		box: '', // 'inbox' (default), 'sent', 'draft', 'outbox', 'failed', 'queued', and '' for all
+	// 		// the following 4 filters are OR relationship
+	// 		_id: 1234, // given a sms id, recommend ONLY use this filter
+	// 		//read:0, // delete all UNread SMS
+	// 		//indexFrom: 0, // start from index 0
+	// 		address: "+919513334624" // delete all SMS from this phone number
+	// 		//body: '# PARKING MODE ' // delete SMS by content
+	// 	};
+	// 	if (SMS) SMS.deleteSMS(filter, function (n) {
+	// 		console.log(n + ' sms messages deleted');
+	// 	}, function (err) {
+	// 		console.log('error delete sms: ' + err);
+	// 	});
+	// }
 
-	function stopsms() {
-		if (SMS) SMS.stopWatch(function () {
-			console.log("has stopped receiver Correctly");
-			//deleteSMS();
-		}, function (err) {
-			console.log(" faild  stopped receiver " + err);
-		});
-	}
+	// function stopsms() {
+	// 	if (SMS) SMS.stopWatch(function () {
+	// 		console.log("has stopped receiver Correctly");
+	// 		//deleteSMS();
+	// 	}, function (err) {
+	// 		console.log(" faild  stopped receiver " + err);
+	// 	});
+	// }
 
-	function listSMS() {
-		var filter = {
-			box: '', // 'inbox' (default), 'sent', 'draft', 'outbox', 'failed', 'queued', and '' for all
+	// function listSMS() {
+	// 	var filter = {
+	// 		box: '', // 'inbox' (default), 'sent', 'draft', 'outbox', 'failed', 'queued', and '' for all
 
-			// following 4 filters should NOT be used together, they are OR relationship
-			//read: 0, // 0 for unread SMS, 1 for SMS already read
-			_id: 1234, // specify the msg id
-			address: '+919513334624', // sender's phone number
-		//	body : '', // content to match
+	// 		// following 4 filters should NOT be used together, they are OR relationship
+	// 		//read: 0, // 0 for unread SMS, 1 for SMS already read
+	// 		_id: 1234, // specify the msg id
+	// 		address: '+919513334624', // sender's phone number
+	// 	//	body : '', // content to match
 
-			// following 2 filters can be used to list page up/down
-			//indexFrom: 0, // start from index 0
-			//maxCount : 10, // count of SMS to return each time
-		};
-		if (SMS) SMS.listSMS({}, function (data) {
-			console.log('sms listed as json array');
-			console.log(JSON.stringify(data));
+	// 		// following 2 filters can be used to list page up/down
+	// 		//indexFrom: 0, // start from index 0
+	// 		//maxCount : 10, // count of SMS to return each time
+	// 	};
+	// 	if (SMS) SMS.listSMS({}, function (data) {
+	// 		console.log('sms listed as json array');
+	// 		console.log(JSON.stringify(data));
 
-			if (Array.isArray(data)) {
-				for (var i in data) {
-					var sms = data[i];
-					console.log(sms);
-				}
-			}
-		}, function (err) {
-			console.log('error list sms: ' + err);
-		});
-	}
+	// 		if (Array.isArray(data)) {
+	// 			for (var i in data) {
+	// 				var sms = data[i];
+	// 				console.log(sms);
+	// 			}
+	// 		}
+	// 	}, function (err) {
+	// 		console.log('error list sms: ' + err);
+	// 	});
+	// }
 	// ***************************** PARKING MODULE END ***********************************************//
 	var reqTime = 12;
 	var singleDeviceInterval;
@@ -180,26 +180,23 @@ angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($sco
 	var polyPaths = [];
 	$scope.lastUpdated = false;
 	$scope.init = function () {
+		console.log("ionsind init");
 		$scope.initialize();
 		var dynamicMapHeight = window.screen.availHeight;
-		$scope.mapHeight = { height: parseInt(dynamicMapHeight) - 43 + "px" };
-		if (localStorage.getItem("choice") == undefined || localStorage.getItem("choice") == null) {
-			$state.go(PageConfig.LIVE_TRACKING_DEVICES);
-		} else {
-			$scope.selectedDevice = localStorage.getItem("choice");
-			getTracker();
-			singleDeviceInterval = $interval(getTracker, reqTime * 1000);
-		}
+		$scope.mapHeight = { height: parseInt(dynamicMapHeight) - 60 + "px" };
+		// if (localStorage.getItem("choice") == undefined || localStorage.getItem("choice") == null) {
+		// 	$state.go(PageConfig.LIVE_TRACKING_DEVICES);
+		// } else {
+		// 	$scope.selectedDevice = localStorage.getItem("choice");
+		// 	getTracker();
+		// 	singleDeviceInterval = $interval(getTracker, reqTime * 1000);
+		// }
 	};
 
 	$scope.gotoLivetrackingDevice = function () {
 		$interval.cancel(singleDeviceInterval);
 		$state.go(PageConfig.LIVE_TRACKING_DEVICES)
 	};
-
-	angular.element(document).ready(function () {
-		$scope.initialize();
-	});
 
 	$scope.singleDeviceZoomed = true;
 	var map;
@@ -257,9 +254,14 @@ angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($sco
 	//=============== ~animation funcitons =====================
 
 	$scope.httpLoading = false;
+	
+	angular.element(document).ready(function () {
+		console.log("ionsind angular reaayd");
+		$scope.initialize();
+	});
 
 	$scope.initialize = function () {
-		var $map = $('#map');
+		// var $map = $('#live-map');
 		infowindow = new google.maps.InfoWindow({
 			size: new google.maps.Size(150, 50)
 		});
@@ -269,10 +271,10 @@ angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($sco
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 			zoomControl: false,
 			clickableIcons: false,
-			fullscreenControl: true
+			fullscreenControl: false
 		};
 
-		map = new google.maps.Map(document.getElementById("map"), myOptions);
+		map = new google.maps.Map(document.getElementById("live_map"), myOptions);
 		console.log("loading map");
 
 		// Instantiate a directions service.
@@ -316,10 +318,10 @@ angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($sco
 		});
 	};
 
-	angular.element(document).ready(function () {
-		google.maps.event.addDomListener(window, 'load', $scope.initialize);
+	// angular.element(document).ready(function () {
+	// 	google.maps.event.addDomListener(window, 'load', $scope.initialize);
 
-	});
+	// });
 	$scope.resizeMap = function () {
 		$("#map_canvas").css("position", 'fixed').
 			css('top', 0).
