@@ -1,0 +1,33 @@
+<div class="row" style="height:70px;">
+        <div>
+            <div class="row">
+                <div class="col-md-9" style="padding-top:15px;">
+                    <label class="custom_label" style="color:grey;">Select Vehicle</label>
+                </div>
+                <div class="col-md-1" style="padding-top:15px;">
+                    <img src="img/notification.png" style="height: 25px;float:right;">
+                </div>
+                <div class="col-md-2" style="padding-top:15px;">
+                    <label>My Account</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3" id="clearTextGroup">
+                    <select id="selectGroup" class="form-control" style="height:25px;color:lightgrey;font-size:11px;" name="groupList"
+                        ng-model="groupname" ng-change="fetchDevicelist(groupname)">
+                        <option ng-if="groupList.length" value="" selected disabled
+                            class="disable_select">-- Select Group - -</option>
+                        <option ng-if="!groupList.length" selected disabled>No
+                            Group Available</option>
+                        <option ng-repeat="option in groupList  | orderBy :'gname'"
+                            value="{{ option.gid }}">{{option.gname}}</option>
+                    </select>      
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="padding:0px;">
+            <div id="replay_map" style="height:600px;"></div>
+        </div>
+    </div>

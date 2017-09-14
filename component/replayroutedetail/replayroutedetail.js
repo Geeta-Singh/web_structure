@@ -1,5 +1,5 @@
 angular.module('replayroutedetail', [])
-	.controller('ReplayRouteDetailCtrl', function ($scope, $rootScope, $state, $timeout, PageConfig, UtilsFactory, BatsServices,
+	.controller('ReplayRouteDetailCtrl', function ($scope, $rootScope, $timeout, PageConfig, UtilsFactory, BatsServices,
 		Constants) {
 
 		var dynamicMapHeight = window.screen.availHeight;
