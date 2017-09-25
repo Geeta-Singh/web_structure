@@ -13,19 +13,19 @@ angular.module('replayroute', [])
                 $scope.deviceList = response;
                 if (response.length==0) {
                     console.log("inside if for no device");
-                    ionicToast.show('Active devices are not available', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+                    // ionicToast.show('Active devices are not available', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
                 }
             }).error(function (error) {
                 if (error.err == 'Origin Server returned 504 Status') {
-                    ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
-                }
-                else {
-                    ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+                    // ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+                }else {
+                    // ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
                 }// ionicToast.show(error, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
             })
             // ***************** end of fetching devices *****************************
         }
         init();
+
 
         $scope.gotoReplayRoute = function (data, form) {
             if (form.$valid) {

@@ -15,6 +15,8 @@ angular.module('batscontrollers', [
     $interval, BatsServices, UtilsFactory) {
       // $rootScope.loggedIn = false;
       console.log("inside batscontroller");
+
+      var tokenCheck = window.localStorage.token;
     $scope.openSetting = false;
     $scope.openSettingBar = function () {
       $scope.openSetting = !$scope.openSetting;
@@ -93,13 +95,13 @@ angular.module('batscontrollers', [
       if (localStorage.getItem(Constants.ACCESS_TYPE)) {
         localStorage.removeItem(Constants.ACCESS_TYPE)
       }
-       deleteDatabase();
-        cordova.plugins.notification.local.cancelAll(function () {
-        }, this);
+      //  deleteDatabase();
+        // cordova.plugins.notification.local.cancelAll(function () {
+        // }, this);
       $scope.menuLink = 1;
       $interval.cancel($rootScope.notificationCall);
       UtilsFactory.setNotificationcallFirst(0);
-      $state.go(PageConfig.LOGIN);
+      // $state.go(PageConfig.LOGIN);
     }
 
     function deleteDatabase() {
@@ -120,10 +122,11 @@ angular.module('batscontrollers', [
     }
 
     function removeLogin() {
-      BatsServices.logout({}).success(function (response) {
+      BatsServices.logout({ 'token': tokenCheck }).success(function (response) {
        $rootScope.interlogout();
+       $rootScope.loggedIn = false;
       }).error(function (error) {
-        ionicToast.show(error, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+        // ionicToast.show(error, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
       })
     }
 
@@ -132,18 +135,19 @@ angular.module('batscontrollers', [
     // });
 
     $scope.logout = function () {
-      var confirmPopup = $ionicPopup.confirm({
-        title: 'Logout',
-        template: 'Are you sure you want to log out from Bats?',
-        cancelText: 'No',
-        scope: $scope,
-        okText: 'Yes',
-      });
-      confirmPopup.then(function (res) {
-        if (res) {
+      alert("logged out");
+      // var confirmPopup = $ionicPopup.confirm({
+      //   title: 'Logout',
+      //   template: 'Are you sure you want to log out from Bats?',
+      //   cancelText: 'No',
+      //   scope: $scope,
+      //   okText: 'Yes',
+      // });
+      // confirmPopup.then(function (res) {
+      //   if (res) {
           removeLogin();
-        }
-      });
+      //   }
+      // });
     }
 
     // $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){

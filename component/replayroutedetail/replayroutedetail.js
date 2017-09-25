@@ -2,15 +2,81 @@ angular.module('replayroutedetail', [])
 	.controller('ReplayRouteDetailCtrl', function ($scope, $rootScope, $timeout, PageConfig, UtilsFactory, BatsServices,
 		Constants) {
 
+		var tokenCheck = window.localStorage.token;
+		var dataFromReplay;
+		// var dynamicMapHeight = window.screen.availHeight;
+		// $scope.mapHeight = {
+		// 	height: parseInt(dynamicMapHeight) - 133 + "px"
+		// };
 		var dynamicMapHeight = window.screen.availHeight;
-		$scope.mapHeight = {
-			height: parseInt(dynamicMapHeight) - 133 + "px"
-		};
+		console.log("available height: "+dynamicMapHeight);
+		$scope.mapHeight = { height: parseInt(dynamicMapHeight) - 62 + "px" };
 
 		$scope.backToReplayRoute = function () {
 			$state.go(PageConfig.REPLAY_ROUTE);
 		};
 
+		/** function to get the device list **/
+		function init() {
+            var inputParam = {'token': tokenCheck};
+            BatsServices.activeDeviceList(inputParam).success(function (response) {
+                //console.log(JSON.stringify(response));
+                $scope.deviceList = response;
+                if (response.length==0) {
+                    console.log("inside if for no device");
+                    // ionicToast.show('Active devices are not available', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+                }
+            }).error(function (error) {
+                if (error.err == 'Origin Server returned 504 Status') {
+                    // ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+                }else {
+                    // ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+                }// ionicToast.show(error, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+            })
+            // ***************** end of fetching devices *****************************
+        }
+		init();
+
+		function gethistoryValues(selectedDevId,selectedDate){
+			var inputParam = { "token": tokenCheck, "devid": selectedDevId, "slots": getSlotes(selectedDate) };
+			BatsServices.historyExist(inputParam).success(function (response) {
+				dataFromReplay = response;
+				console.log("history: "+angular.toJson(response));
+				if (response.values[0].data == true || response.values[1].data == true || response.values[2].data == true || response.values[3].data == true) {
+					UtilsFactory.setDataForReplay(response);
+					$scope.timeSlots = response.values;
+					console.log("timeslot values: "+$scope.timeSlots);
+					// $state.go(PageConfig.REPLAY_ROUTE_DETAILS);
+				}else {
+					// ionicToast.show("No data avialable for the Selected date");
+				}
+			}).error(function (error) {
+				if (error.err == 'Origin Server returned 504 Status') {
+					// ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+				}else {
+					// ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+				}
+			})
+		}
+		
+		/** function to get the history slots **/
+		function getSlotes(date) {
+            console.log(date)
+            return [{ "sts": setTimeStamp(date, 00, 00, 00), "ets": setTimeStamp(date, 05, 59, 59) },
+            { "sts": setTimeStamp(date, 06, 00, 00), "ets": setTimeStamp(date, 11, 59, 59) },
+            { "sts": setTimeStamp(date, 12, 00, 00), "ets": setTimeStamp(date, 17, 59, 59) },
+            { "sts": setTimeStamp(date, 18, 00, 00), "ets": setTimeStamp(date, 23, 59, 59) }];
+		}
+		
+		/** function to set the timestamp calling from above getSlots() **/
+		function setTimeStamp(selectDateTS, hr, mins, sec) {
+            var timeStamp = new Date(selectDateTS);
+            timeStamp.setHours(hr);
+            timeStamp.setMinutes(mins);
+            timeStamp.setSeconds(sec);
+            return timeStamp.valueOf();
+        }
+ 
 		$scope.showReplayMenu = false;
 
 		$scope.availableOptions = [
@@ -23,6 +89,26 @@ angular.module('replayroutedetail', [])
 		$scope.showDatepicker = true;
 		$scope.showTimeSlot = false;
 		$scope.blankTable = true;
+
+		$scope.openCal = function(){
+			$('#trvelRouteHstTimePic').datetimepicker({
+				format: 'DD/MM/YYYY',
+				maxDate: 'now',        		
+				ignoreReadonly:true,
+			}).on("dp.change",function (e) {
+				dateChange(e.date._d);
+			});
+		}
+		
+		function dateChange(date){
+			myDateChange(date);
+			// $scope.activeMenu = '5';
+		}
+
+		function myDateChange(date){
+			gethistoryValues($scope.data.selectedvehicle,date)
+			console.log("date changed: "+date);
+		}
 
 		$scope.todayDate = new Date();
 		$scope.greyColor = { color: "#637778" };
@@ -186,8 +272,8 @@ angular.module('replayroutedetail', [])
 
 		google.maps.event.addDomListener(window, 'load', $scope.initialize);
 
-		var dataFromReplay = UtilsFactory.getDataForReplay();
-		$scope.timeSlots = dataFromReplay.values;
+		// var dataFromReplay = UtilsFactory.getDataForReplay();
+		// $scope.timeSlots = dataFromReplay.values;
 
 		$scope.getHistory = function (timeSlot) {
 			$scope.showReplayMenu = true;
@@ -195,13 +281,13 @@ angular.module('replayroutedetail', [])
 			$scope.initialize();
 			$scope.end = false;
 			$scope.replaySlot = timeSlot;
-			var inputParam = { 'devid': dataFromReplay.devid, 'sts': timeSlot.sts, 'ets': timeSlot.ets };
+			var inputParam = { 'token':tokenCheck, 'devid': dataFromReplay.devid, 'sts': timeSlot.sts, 'ets': timeSlot.ets };
 			BatsServices.history(inputParam).success(function (response) {
 				$scope.historyVal = response;
 				if ($scope.historyVal.values != "") {
 					var devtype = $scope.historyVal.vehicle_model;
 
-					var newInputParam = { 'devid': dataFromReplay.devid, 'sts': timeSlot.sts, 'ets': timeSlot.ets }
+					var newInputParam = { 'token':tokenCheck, 'devid': dataFromReplay.devid, 'sts': timeSlot.sts, 'ets': timeSlot.ets }
 					BatsServices.eventHistory(newInputParam).success(function (response) {
 						// console.log("Event History" +angular.toJson(response));
 						if (response.values != '') {
@@ -209,10 +295,10 @@ angular.module('replayroutedetail', [])
 						}
 					}).error(function (error) {
 						if (error.err == 'Origin Server returned 504 Status') {
-							ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+							// ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
 						}
 						else {
-							ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+							// ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
 						}
 					})
 					if (devtype == 'car') {
@@ -238,7 +324,8 @@ angular.module('replayroutedetail', [])
 					map.setZoom(16);
 					displayHistory();
 				} else {
-					ionicToast.show('No history avilable for this Vehicle');
+					alert("No history avilable for this Vehicle");
+					// ionicToast.show('No history avilable for this Vehicle');
 					clearMap();
 					for (i in svg) { marker[i].setMap(null); }
 					if (setinterval) {
@@ -247,10 +334,10 @@ angular.module('replayroutedetail', [])
 				}
 			}).error(function (error) {
 				if (error.err == 'Origin Server returned 504 Status') {
-					ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+					// ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
 				}
 				else {
-					ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+					// ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
 				}//ionicToast.show(error, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
 			})
 		};
@@ -492,8 +579,9 @@ angular.module('replayroutedetail', [])
 				});
 			}
 			if ($scope.plottedData.length <= 1) {
-				ionicToast.show("Stationary Vehicle", Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+				// ionicToast.show("Stationary Vehicle", Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
 				//swal({title:"Stationary Vehicle"});
+				alert("Stationary vehicle");
 			}
 			else {
 				// nothing
@@ -631,7 +719,7 @@ angular.module('replayroutedetail', [])
 			// console.log("lastPosn: "+lastPosn);
 			map.panTo(lastPosn);
 			var newLatLong = p.toString().replace('(', '');
-			 console.log("checking replay route when some other paeg is openlatlong: "+newLatLong);
+			//  console.log("checking replay route when some other paeg is openlatlong: "+newLatLong);
 			newLatLong = newLatLong.toString().replace(')', '');
 			var inputLatLong = newLatLong.split(",", 2);
 			var newLatitude = inputLatLong[0];

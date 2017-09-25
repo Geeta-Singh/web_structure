@@ -684,3 +684,102 @@ right: 70%;
 .ion-datetime-picker input[type="text"] {
     border : none;
 }
+
+/** newly added css for web is after this comment **/
+
+.custom_label{
+    margin-bottom:0px;
+    color:grey;
+}
+
+.no-padding{
+    padding: 0px !important;
+}
+
+.header-padding{
+    padding-top:10px;
+}
+
+.dev_select{
+    height:30px;
+    color:lightgrey;
+    font-size:11px;
+}
+
+.right-header{
+    padding-top:30px;
+}
+
+.bell-icon{
+    height: 25px;
+    margin-top:-5px;
+}
+
+.live-bottom-box{
+    border:1px solid lightgrey;
+    box-shadow: 1px 1px 15px grey;
+    background-color:#212022;
+    position:fixed;
+    top:75%;
+    width:40%;
+    border-radius:10px;
+    height:175px;
+}
+
+.date-field{
+    height: 30px;
+    background-color: white !important;
+    border: solid 1px lightgrey !important;
+}
+
+.slot-button-data{
+    color: white;
+    background-color: darkcyan;
+}
+
+.slot-button-nodata{
+    color: black;
+    background-color: lightgrey;
+}
+
+.btn-location{
+    color: deepskyblue;
+    padding-left: 15px;
+    background-color: white;
+    border: solid 1px lightblue;
+    border-radius: 5px;
+    padding-right: 15px;
+}
+
+.green-btn{
+    background-color: #00ba88;
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+    padding: 6px 20px 6px 20px;
+    color: white;
+}
+
+.white-btn{
+    background-color: white;
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+    padding: 6px 20px 6px 20px;
+    color: black;
+}
+
+.my-account{
+    border: none;
+    border-bottom: none;
+    margin-top:-5px;
+}
+
+.my-account > button{
+    background-color: white;
+    border: none;
+}
+
+.my-account > .dropdown-menu{
+    width: 250px;
+    top: 160%;
+    left: -100%;
+}

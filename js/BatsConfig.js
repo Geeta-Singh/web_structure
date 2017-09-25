@@ -19,20 +19,32 @@ angular.module('batsconfig', ['ngRoute'])
     })
     
     .when('/b2c_web/events', {
-      templateUrl: 'component/eventhistory/eventhistory.html',
-      controller: 'EventHistoryCtrl',
+      templateUrl: 'component/eventhistorydetail/eventhistorydetail-new.html',
+      controller: 'EventHistoryDetailCtrl',
       cache: false
     })
     
     .when('/b2c_web/statistics', {
-      templateUrl: 'component/vehiclestatisticdetail/vehiclestatisticdetail.html',
+      templateUrl: 'component/vehiclestatisticdetail/vehiclestatisticdetail-new.html',
       controller: 'VehicleStatisticsDetailCtrl',
       cache: false
     })
     
     .when('/b2c_web/reports', {
-      templateUrl: 'component/report/report.html',
-      controller: 'ReplayRouteDetailCtrl',
+      templateUrl: 'component/report/report-new.html',
+      controller: 'ReportCtrl',
+      cache: false
+    })
+    
+    .when('/b2c_web/member', {
+      templateUrl: 'component/managemember/managemember-new.html',
+      controller: 'ManageMemberCtrl',
+      cache: false
+    })
+    
+    .when('/b2c_web/device', {
+      templateUrl: 'component/managetracker/managetracker-new.html',
+      controller: 'ManageTrackerCtrl',
       cache: false
     });
     // $httpProvider.interceptors.push("BatsInterceptor");

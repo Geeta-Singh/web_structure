@@ -8,34 +8,50 @@
                 <div>
                     <span style="color:grey;font-size:10px;">Register your account</span>
                 </div>
-                <form class="bottom-font">
+                <form name="signupStep1Form.form" class="bottom-font">
                     <div class="div-padding">
                         <span class="pull-left">First Name</span>
-                        <input class="text-box" type="text">
+                        <input class="text-box" type="text" ng-model="data.fName" required name="fName" 
+                            ng-class="{error: signupStep1Form.form.fName.$invalid && Validate}" minlength="2" maxlength="20"
+                            ng-pattern ="/^[a-zA-Z\s]*$/" oninput="if(value.length>20)value=value.slice(0,20)">
                     </div>
                     <div class="div-padding">
                         <span class="pull-left">Last Name</span>
-                        <input class="text-box" type="text">
+                        <input class="text-box" type="text" name="lName" ng-model="data.lName" maxlength="20"
+                            required ng-class="{error: signupStep1Form.form.lName.$invalid && Validate}" minlength="1"
+                            ng-pattern ="/^[a-zA-Z\s.]*$/" oninput="if(value.length>20)value=value.slice(0,20)">
                     </div>
                     <div class="div-padding">
                         <span class="pull-left">Email</span>
-                        <input class="text-box" type="text">
+                        <input class="text-box" type="text"  name="email" ng-model="data.email" required 
+                            ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" oninput="if(value.length>35)value=value.slice(0,35)"
+                            ng-class="{error: signupStep1Form.form.email.$invalid && Validate}" maxlength="35" >
                     </div>
                     <div class="div-padding">
                         <span class="pull-left">Phone Number</span>
-                        <input class="text-box" type="text">
+                        <input class="text-box" oninput="if(value.length>10)value=value.slice(0,10)" 
+                            type="number" ng-model="data.phonenumber" minlength="10" required
+                            ng-class="{error: signupStep1Form.form.phonenumber.$invalid && Validate }">
                     </div>
                     <div class="div-padding">
                         <span class="pull-left">Password</span>
-                        <input class="text-box" type="text">
+                        <input class="text-box" type="password" autocomplete="new-password" ng-pattern="/^(?=.*\d+)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%]{8,25}$/"
+                        name="password" ng-model="data.password" oninput="if(value.length>25)value=value.slice(0,25)"
+                           required ng-class="{error: signupStep1Form.form.password.$invalid && Validate }">
                     </div>
                     <div class="div-padding">
                         <span class="pull-left">Country</span>
-                        <input class="text-box" type="text">
+                        <select ng-model="data.country" class="dropdown" name="selectedcountry" required placeholder="Country" 
+                            ng-options="x for x in countries"
+                                ng-class="{error: signupStep1Form.form.selectedcountry.$invalid && Validate}">
+                            <option value=""disabled selected>Country</option>
+                        </select>
                     </div>
                     <div class="div-padding">
                         <span class="pull-left">State</span>
-                        <input class="text-box" type="text">
+                        <select ng-model="data.state" class="dropdown" name="selectedstate" required placeholder="State" 
+                            ng-options="x for x in states" ng-class="{error: signupStep1Form.form.selectedstate.$invalid && Validate}">
+                        <option value="" disabled selected>States</option> </select>
                     </div>
                     <div class="div-padding" style="padding-bottom:20px;padding-top:20px;">
                         <button class="btn btn-original" style="width:100%;height:25px;color:white;background-color:#00ba88;padding:0px;">Next</button>

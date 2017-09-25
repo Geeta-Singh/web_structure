@@ -1,6 +1,8 @@
 angular.module('report', [])
-    .controller('ReportCtrl', function ($scope, $rootScope, BatsServices, PageConfig, Constants, $state,
+    .controller('ReportCtrl', function ($scope, $rootScope, BatsServices, PageConfig, Constants,
         UtilsFactory) {
+
+        var tokenCheck = window.localStorage.token;
 
         var reportParam = {};
         var bytes;
@@ -18,12 +20,12 @@ angular.module('report', [])
                             {'id':'10','month':'October'},
                             {'id':'11','month':'November'},
                             {'id':'12','month':'December'}];
-        var inputParam = {};
+        var inputParam = { 'token': tokenCheck };
         //***************************** for fetching device list******************
         BatsServices.activeDeviceList(inputParam).success(function (response) {
-            $scope.deviceList = response;
+            $scope.trackerList = response;
         }).error(function (error) {
-            ionicToast.show(error, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+            // ionicToast.show(error, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
         })
         // ***************** end of fetching devices *****************************
 
@@ -41,7 +43,7 @@ angular.module('report', [])
                     writePDFToFile(fileName, bytes);
                 }
             }).error(function(error){
-                ionicToast.show('Please select a different Month.', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+                // ionicToast.show('Please select a different Month.', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
             })
         }
 

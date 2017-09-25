@@ -1,0 +1,49 @@
+<div class="row" style="height:70px;" ng-init="init()">
+    <div>
+        <div class="row">
+            <div class="col-md-2 header-padding">
+                <label class="custom_label">Add Tracker</label>
+                <div>
+                    <button class="green-btn">Add</button>
+                </div>
+            </div>
+            <div class="col-md-offset-8 col-md-2 right-header">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img class="bell-icon" src="img/notification.png">
+                    </div>
+                    <div class="col-md-8 center-text no-padding">
+                        <div ng-include src="'templates/myAccount.html'"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" style="padding:0px;">
+        <div class="row" ng-repeat="tracker in trackerList track by $index" style="font-size: 13px;color: grey;padding-top: 15px;padding-bottom: 10px;border-bottom: solid 1px lightgrey;border-top: solid 1px lightgrey;">
+            <div class="col-md-1">
+                <img src="img/car.png" style="height: 25px;float:right;">
+            </div>
+            <div class="col-md-2 center-text">
+                <p style="margin-bottom: 0px;">{{tracker.devid}}</p>
+                <p style="font-size:10px;">{{tracker.status}}</p>
+            </div>
+            <div class="col-md-1 center-text" style="padding:0px;">
+                <p style="margin-bottom: 0px;">{{tracker.device_sim_cn}}</p>
+                <p style="font-size:10px;color: deepskyblue;">{{tracker.sim_service_provider}}</p>
+            </div>
+            <div class="col-md-2 center-text">
+                <span>{{tracker.vehicle_name}}</span> / <span>{{tracker.vehicle_num}}</span>
+            </div>
+            <div class="col-md-1 center-text">
+                <p style="margin-bottom: 0px;">{{tracker.speed_limit}}</p>
+                <p style="font-size:10px;">Speed Limit</p>
+            </div>
+            <div class="col-md-offset-3 col-md-2" style="padding:0px;">
+                <button class="green-btn" style="margin-right:10px;">Activate</button><button class="white-btn">Update</button>
+            </div>
+        </div>
+    </div>
+</div>

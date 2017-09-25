@@ -1,5 +1,41 @@
 angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($scope, $rootScope, $timeout, UtilsFactory, PageConfig, BatsServices,
-	$interval, Constants ) {
+	$interval, Constants, ChartFactory) {
+
+		var tokenCheck = window.localStorage.token;
+		console.log("token value: "+angular.toJson(tokenCheck));
+
+		var inputParam = {"token": tokenCheck};
+        BatsServices.activeDeviceList(inputParam).success(function (response) {
+            $scope.trackerList = response;
+             if (response.length==0) {
+                console.log("inside if for no device");
+                // ionicToast.show('Active devices are not available', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+            }
+            _.each($scope.trackerList, function (tracker, i) {
+                if (tracker.alarm_type == '0') {
+                    $scope.trackerList[i].statusType = "Geofence";
+                }else if (tracker.alarm_type == '1') {
+                    $scope.trackerList[i].statusType = "Overspeed";
+                }else if (tracker.alarm_type == '2') {
+                    $scope.trackerList[i].statusType = "Geofence & Overspeed";
+                }else if (tracker.alarm_type == '3') {
+                    $scope.trackerList[i].statusType = "Normal";
+                }else if (tracker.alarm_type == '4') {
+                    $scope.trackerList[i].statusType = "Out of N/W";
+                }else{
+                    $scope.trackerList[i].statusType = "Out of N/W";
+                    tracker.alarm_type = '4';
+                }
+            })
+        }).error(function (error) {
+            if (error.err == 'Origin Server returned 504 Status') {
+                // ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+            }else {
+                // ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+            }
+        })
+
+
 	var loc = localStorage.getItem(Constants.PARKING_MODE);
 	console.log("local storage "+loc);
 	if (loc == 'true') {
@@ -179,19 +215,43 @@ angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($sco
 	});
 	var polyPaths = [];
 	$scope.lastUpdated = false;
-	$scope.init = function () {
-		console.log("ionsind init");
-		$scope.initialize();
+	// $scope.init = function () {
+	// 	console.log("inside init");
+	// 	$scope.initialize();
 		var dynamicMapHeight = window.screen.availHeight;
-		$scope.mapHeight = { height: parseInt(dynamicMapHeight) - 60 + "px" };
-		// if (localStorage.getItem("choice") == undefined || localStorage.getItem("choice") == null) {
-		// 	$state.go(PageConfig.LIVE_TRACKING_DEVICES);
-		// } else {
-		// 	$scope.selectedDevice = localStorage.getItem("choice");
-		// 	getTracker();
-		// 	singleDeviceInterval = $interval(getTracker, reqTime * 1000);
-		// }
-	};
+		$scope.mapHeight = { height: parseInt(dynamicMapHeight) - 62 + "px" };
+	// 	// if (localStorage.getItem("choice") == undefined || localStorage.getItem("choice") == null) {
+	// 	// 	$state.go(PageConfig.LIVE_TRACKING_DEVICES);
+	// 	// } else {
+	// 	// 	$scope.selectedDevice = localStorage.getItem("choice");
+	// 	// 	getTracker();
+	// 	// 	singleDeviceInterval = $interval(getTracker, reqTime * 1000);
+	// 	// }
+	// };
+
+	$scope.plotVehicleIcon = function(device){
+		console.log("device selected: "+device);
+		$scope.selectedDevice = device;
+		getTracker();
+		singleDeviceInterval = $interval(getTracker, reqTime * 1000);
+		getDeviceInfo(device);
+	}
+
+	function getDeviceInfo(device){
+		inputParam={'token':tokenCheck,'devid':device};
+		BatsServices.deviceInfo(inputParam).success(function (response) {
+			$scope.deviceInfo = response
+			console.log("device info "+angular.toJson($scope.deviceInfo));
+		}).error(function (error) {
+			if(error.err=='Origin Server returned 504 Status'){
+					// ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+			}else{
+				// ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+			}
+			// ionicToast.show(error, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+		})
+	}
+
 
 	$scope.gotoLivetrackingDevice = function () {
 		$interval.cancel(singleDeviceInterval);
@@ -256,26 +316,34 @@ angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($sco
 	$scope.httpLoading = false;
 	
 	angular.element(document).ready(function () {
-		console.log("ionsind angular reaayd");
 		$scope.initialize();
 	});
 
 	$scope.initialize = function () {
-		// var $map = $('#live-map');
-		infowindow = new google.maps.InfoWindow({
-			size: new google.maps.Size(150, 50)
-		});
+		
 		var styleMap = [{ "featureType": "administrative", "elementType": "labels", "stylers": [{ "visibility": "on" }] }, { "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "landscape", "elementType": "labels", "stylers": [{ "visibility": "on" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi", "elementType": "geometry.fill", "stylers": [{ "color": "#bee4f4" }, { "visibility": "on" }] }, { "featureType": "poi", "elementType": "labels", "stylers": [{ "visibility": "on" }, { "hue": "#ff0000" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "saturation": -100 }, { "lightness": 45 }] }, { "featureType": "road", "elementType": "labels", "stylers": [{ "visibility": "on" }, { "hue": "#ff0000" }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }] }, { "featureType": "transit", "elementType": "labels", "stylers": [{ "visibility": "on" }, { "hue": "#ff0000" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#46bcec" }, { "visibility": "on" }] }, { "featureType": "water", "elementType": "labels", "stylers": [{ "visibility": "on" }, { "color": "#000000" }] }];
 		var myOptions = {
 			zoom: 16,
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 			zoomControl: false,
 			clickableIcons: false,
-			fullscreenControl: false
+			fullscreenControl: false,
+			streetViewControl: false
 		};
 
+		address = 'India';
+		geocoder = new google.maps.Geocoder();
+
+		geocoder.geocode({ 'address': address }, function (results, status) {
+			console.log("results of fitbounds: "+angular.toJson(results));
+			map.fitBounds(results[0].geometry.viewport);
+		});
+
 		map = new google.maps.Map(document.getElementById("live_map"), myOptions);
-		console.log("loading map");
+
+		infowindow = new google.maps.InfoWindow({
+			size: new google.maps.Size(150, 50)
+		});
 
 		// Instantiate a directions service.
 		directionsService = new google.maps.DirectionsService();
@@ -294,6 +362,8 @@ angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($sco
 			strokeColor: '#FF0000',
 			strokeWeight: 0
 		});
+
+		map.setZoom(16);
 		/*
 		* google map default zoom_changed event
 		* */
@@ -796,9 +866,9 @@ angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($sco
 
 	function getTracker() {
 		//$scope.singleDeviceZoomed = true;
-		if ($state.is(PageConfig.LIVE_TRACKING)) {
+		// if ($state.is(PageConfig.LIVE_TRACKING)) {
 			var obj = [];
-			var inputParam = { "devlist": [$scope.selectedDevice] };
+			var inputParam = {"token": tokenCheck, "devlist": [$scope.selectedDevice] };
 			BatsServices.currentData(inputParam).success(function (response) {
 				console.log("current data: "+angular.toJson(response));
 				UtilsFactory.setLivetrackingDetails(response);
@@ -807,6 +877,9 @@ angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($sco
 					$scope.singleDevice = true;
 					$scope.divcolor = response[0].values.type;
 					$scope.vehicleName = response[0].vehicle_name;
+					$scope.vehicleNumber = response[0].vehicle_num;
+					$scope.trackerID = response[0].devid;
+					// $scope.simCarrier = response[0].
 					speedValue = response[0].values.Velocity;
 					speedlimit = response[0].speed_limit;
 					$scope.showArrow = true;
@@ -847,20 +920,20 @@ angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($sco
 					$scope.bikeCount = 0;
 					$scope.busCount = 0;
 					$scope.truckCount = 0;
-					ionicToast.show('Device of id ' + response[0].devid + ' is not updating kindly check it');
+					// ionicToast.show('Device of id ' + response[0].devid + ' is not updating kindly check it');
 				}
 			}).error(function (error) {
 				if (error.err == 'Origin Server returned 504 Status') {
-					ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+					// ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
 				}
 				else {
-					ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+					// ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
 				}
 				//ionicToast.show(error, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
 			})
-		} else {
-			$interval.cancel(singleDeviceInterval);
-		}
+		// } else {
+		// 	$interval.cancel(singleDeviceInterval);
+		// }
 	};
 
 	function getDateTime(ts) {
@@ -912,7 +985,7 @@ angular.module('livetracking', []).controller('LiveTrackingCtrl', function ($sco
 			$scope.lastUpdated = true;
 			$scope.singleImg_url = "../images/mapIcon/no-response.png";
 			$scope.barTxt = "No-Response State";
-			$(".ltwrap_type").css("background-color", "#2d2d2d");
+			$(".ltwrap_type").css("background-color", "grey");
 			//$(".barStyleSingle").css("background-color", "#0540E5");
 		}
 	};

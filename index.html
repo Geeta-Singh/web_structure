@@ -9,7 +9,7 @@
 
   <link rel="manifest" href="manifest.json">
   <!-- <link href="lib/ionic/css/ionic.css" rel="stylesheet"> -->
-  <link href="css/style.css" rel="stylesheet">
+  <!-- <link href="css/style.css" rel="stylesheet"> -->
 
   <script src="lib/angular/angular.js"></script>
   <!-- <script src="lib/ionic/js/angular-ui/angular-ui-router.min.js"></script>  -->
@@ -46,11 +46,14 @@
   <link href="assets/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="css/angular-material.min.css" rel="stylesheet">
   <link href="assets/font-awesome/font-awesome.min.css" rel="stylesheet">
+  <link href="assets/datepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+  <link href="assets/sweetalert/sweetalert.css" rel="stylesheet" >
   <!-- <link href="assets/ion-place-autocomplete/ion-place-autocomplete.css" rel="stylesheet"> -->
   <!-- <link href="assets/ion-datetime-picker/ion-datetime-picker.min.css" rel="stylesheet"> -->
+  <link href="css/style.css" rel="stylesheet">
  
   <!--third part js-->
-  <script src="assets/jquery/jquery.min.js"></script>
+  <script src="assets/jquery/jquery-1.11.2.min.js"></script>
   <script src="assets/tooltipster/jquery.tooltipster.js"></script>
   <script src="assets/spinner/angular-loading-spinner.js"></script>
   <script src="assets/spinner/angular-spinner.min.js"></script>
@@ -71,6 +74,8 @@
   <script src="assets/highchart/highcharts-more.min.js"></script>
   <script src="assets/highchart/solid-gauge.min.js"></script>
   <script src="assets/round-progressbar/roundProgress.min.js"></script>
+  <script src='assets/datepicker/bootstrap-datetimepicker.js'></script>
+  <script src="assets/sweetalert/sweetalert-dev.js"></script>
  <!--// <script src="lib/angular-gm/angularjs-google-maps.js"></script>-->
 
 
@@ -239,7 +244,7 @@
     <!-- below code is for after login -->
     <div ng-if="loggedIn">
         <div class="row">
-            <div class="col-md-2" style="border-right:1px solid lightgrey;height:100%;padding-left:40px;">
+            <div class="col-md-2" style="border-right:1px solid lightgrey;height:100vh;padding-left:40px;">
                 <div>
                     <div style="padding-top: 10px;padding-bottom: 50px;margin-left:-10px;">
                         <img src="img/logo-login.png" style="width:130px;">
@@ -272,6 +277,19 @@
                         <a href="/b2c_web/reports">
                             <img src="img/menu/reports.png" width="20px">
                             <label style="color: grey;padding-left: 20px;font-size: 12px;">Reports</label>
+                        </a>
+                    </div>
+                    <div style="padding-top: 20px;font-size: 10px;margin-left: -20px;padding-bottom: 20px;color: grey;">Settings</div>
+                    <div style="padding-bottom: 10px;">
+                        <a href="/b2c_web/member">
+                            <img src="img/menu/manage_member.png" width="20px">
+                            <label style="color: grey;padding-left: 20px;font-size: 12px;">Manage Member</label>
+                        </a>
+                    </div>
+                    <div style="padding-bottom: 10px;">
+                        <a href="/b2c_web/device">
+                            <img src="img/menu/manage_device.png" width="20px">
+                            <label style="color: grey;padding-left: 20px;font-size: 12px;">Manage Device</label>
                         </a>
                     </div>
                 </div>

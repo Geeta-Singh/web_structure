@@ -1,18 +1,21 @@
 angular.module('managetracker', [])
-    .controller('ManageTrackerCtrl', function ($scope, $state, $timeout, PageConfig, BatsServices,  $interval,
+    .controller('ManageTrackerCtrl', function ($scope, $timeout, PageConfig, BatsServices,  $interval,
         Constants, UtilsFactory) {
+
+        var tokenCheck = window.localStorage.token;
         var intervaltime = 15;
         function init() {
-            var inputParam = {};
+            var inputParam = {'token':tokenCheck};
             BatsServices.deviceList(inputParam).success(function (response) {
+                console.log("response: "+angular.toJson(response));
                 $scope.trackerList = response;
                // checkDeviceIsPending();
             }).error(function (error) {
                 if (error.err == 'Origin Server returned 504 Status') {
-                    ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+                    // ionicToast.show('Internet is very slow', Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
                 }
                 else {
-                    ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
+                    // ionicToast.show(error.err, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
                 }// ionicToast.show(error, Constants.TOST_POSITION, false, Constants.TIME_INTERVAL);
             });
         }

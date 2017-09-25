@@ -1,0 +1,24 @@
+<div class="dropdown my-account">
+    <button class="dropdown-toggle" type="button" data-toggle="dropdown">My Account
+        <span class="caret"></span></button>
+    <ul class="dropdown-menu" ng-controller="BatsCtrl">
+        <li>
+            <div class="row">
+                <div class="col-md-4" style="padding-top:20px;">
+                    <img src="img/notification.png" style="height: 50px;">
+                </div>
+                <div class="col-md-8" style="padding-top: 20px;padding-left: 0px;">
+                    <p style="margin-bottom:0px;font-weight:bold;">Nikhil Patteri</p>
+                    <p style="margin-bottom:0px;font-size:10px;">nikhilpatteri@velankanigroup.com</p>
+                    <p style="margin-bottom:0px;font-size:10px;">8861354169</p>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="row" style="padding: 20px 0px 5px 0px;font-size:10px;">
+                <div class="col-md-6">Change Password</div>
+                <div ng-click="logout()" class="col-md-6" style="text-align:right;">Logout</div>
+            </div>
+        </li>
+    </ul>
+</div>
